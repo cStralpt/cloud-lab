@@ -1,11 +1,41 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useRef } from "react";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
-  const divRef = useRef();
-  console.log(divRef?.current?.offsetTop);
+  const blueRef = useRef(0);
+  const redRef = useRef(1);
+  const compoundRef = useRef(2);
+  const [getCmp1, setCmp1] = useState();
+  const [getCmp2, setCmp2] = useState();
+  const animateFormula = (compund1, compound2) => {
+    redRef.current.style.position = "absolute";
+    redRef.current.style.left = `${redRef.current.offsetLeft}px`;
+    const animateTime = setTimeout(() => {
+      redRef.current.style.height = `${redRef.current.offsetHeight}px`;
+      redRef.current.style.left = `${blueRef.current.offsetLeft - 100}px`;
+      redRef.current.style.top = `-${blueRef.current.offsetTop + 100}px`;
+      redRef.current.style.transform = "rotate(90deg)";
+      clearTimeout(animateTime);
+    }, 100);
+    redRef.current.style.bottom = "0";
+    redRef.current.style.top = "0";
+  };
+  useEffect(() => {
+    console.log(`👉😍❤️ 😎👌 compoundRef`, compoundRef.current);
+
+    redRef.current.addEventListener("click", (e) => {
+      redRef.current.style.transition = "0.5s all ease";
+      animateFormula();
+      // redRef.current.style.borderRadius = "20px";
+      // redRef.current.style.zIndex="99";
+    });
+
+    return () => {};
+  }, []);
 
   return (
     <div className="flex h-[100vh] flex-col">
@@ -16,9 +46,32 @@ export default function Home() {
       </Head>
 
       <main className="flex flex-1 justify-center">
-        <div className="content-container flex flex-1 w-full max-w-md border-4">
-          <div className="formulas-container flex">
-            <span className="formula-shape w-14 bg-blue-500"></span>
+        <div className="content-container flex flex-1 w-full max-w-md border-4 items-center">
+          <div className="formulas-container flex h-40 gap-3 w-full justify-center relative border-2">
+            <div className="w-14 flex">
+              <span
+                className="formula-shape w-14 bg-blue-500"
+                ref={blueRef}
+              ></span>
+            </div>
+            <div className="w-14 flex">
+              <span
+                className="formula-shape w-14 bg-yellow-400"
+                ref={compoundRef}
+              ></span>
+            </div>
+            <div className="w-14 flex">
+              <span
+                className="formula-shape w-14 bg-red-500"
+                ref={redRef}
+              ></span>
+            </div>
+            <div className="w-14 flex">
+              <span
+                className="formula-shape w-14 bg-orange-500 "
+                ref={compoundRef}
+              ></span>
+            </div>
           </div>
         </div>
       </main>
